@@ -62,11 +62,13 @@ SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev
 
 echo "-----> Building init script"
 INIT=$BUILD_DIR/.init.lisp
+USER_INIT=$BUILD_DIR/cf-setup.lisp
+
 cat > $INIT <<EOF
 (load "$QUICKLISP_PATH")
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
-(ql:quickload "$SYSTEM")
+(load "$USER_INIT")
 EOF
 
 echo "init script is:"
@@ -77,12 +79,11 @@ cat $INIT
 #ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 
-echo "-----> Building vars"
+echo "-----> Building shared vars file"
 ABCL_VARS=$BUILD_DIR/.vars
 JAVA=$(which java)
 
 cat > $ABCL_VARS <<EOF
-#!/bin/sh
 JAVA=$(which java)
 INIT=$INIT
 ABCL="$JAVA \$JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"

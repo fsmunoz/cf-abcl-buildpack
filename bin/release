@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-source .vars
+source $1/.vars
 
 cat <<EOF
 ---
