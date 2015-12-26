@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-source $1/.vars
+echo "*** Received $1" > /dev/stderr
+VARS=$1/.vars
+source $VARS
+echo "*** Vars: ">  /dev/stderr
+cat $VARS > /dev/stderr
 
 cat <<EOF
 ---
