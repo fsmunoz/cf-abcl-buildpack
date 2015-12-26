@@ -96,6 +96,6 @@ EOF
 echo "-----> Script is:"
 cat $ABCL_BIN
 chmod a+x $ABCL_BIN
-$ABCL_BIN
+sh -x $ABCL_BIN
 echo "-----> END OF COMPILE"
 
