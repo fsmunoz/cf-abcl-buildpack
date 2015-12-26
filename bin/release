@@ -5,7 +5,6 @@ cat <<EOF
 ---
 config_vars:
   PATH: $1:/usr/local/bin:/usr/bin:/bin
-  JVM_OPTS:
 default_process_types:
-  web: abcl --load cf-setup.lisp'
+  web: abcl --load $1/.init2.lisp
 EOF

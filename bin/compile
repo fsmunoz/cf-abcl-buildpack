@@ -158,6 +158,6 @@ cat > $INIT2 <<EOF
 EOF
 cat $INIT2
 
-sh -x $ABCL_BIN --load $INIT2
+#sh -x $ABCL_BIN --load $INIT2
 echo "-----> END OF COMPILE"
 
