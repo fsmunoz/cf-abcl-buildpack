@@ -80,16 +80,18 @@ cat $INIT
 
 
 echo "-----> Building shared vars file"
-ABCL_VARS=$BUILD_DIR/.vars
+ABCL_VARS=$BUILD_DIR/abcl
 JAVA=$(which java)
 
 cat > $ABCL_VARS <<EOF
+#!/bin/sh
 JAVA=$(which java)
 INIT=$INIT
-ABCL="$JAVA \$JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
+ABCL="$JAVA \$JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main --load $INIT"
 EOF
 
 echo "-----> Script is:"
 cat $ABCL_VARS
+chmod a+x ABCL_VARS
 echo "-----> END OF COMPILE"
 #exec $ABCL --load $CACHE_DIR/init.lisp

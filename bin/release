@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-echo "*** Received $1" > /dev/stderr
+
 VARS=$1/.vars
-source $VARS
-echo "*** Vars: ">  /dev/stderr
-cat $VARS > /dev/stderr
 
 cat <<EOF
 ---
 config_vars:
-  PATH: /usr/local/bin:/usr/bin:/bin
+  PATH: $1:/usr/local/bin:/usr/bin:/bin
   JVM_OPTS: -server -Xrs -Xmx400m
 default_process_types:
-  web: $ABCL  --load $INIT"
+  web: abcl
 EOF
