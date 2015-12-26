@@ -160,6 +160,6 @@ EOF
 cat $INIT2
 
 #sh -x $ABCL_BIN --load $INIT2
-$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
+#$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
 echo "-----> END OF COMPILE"
 
