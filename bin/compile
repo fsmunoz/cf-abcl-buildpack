@@ -109,7 +109,7 @@ cat > $INIT <<EOF
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
 (push "$BUILD_DIR/" asdf:*central-registry*)
-(load "$USER_INIT")
+(ql:quickload "abcl-bluemix")
 EOF
 
 echo "init script is:"
@@ -136,13 +136,13 @@ ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.l
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
-exec $ABCL
+exec $ABCL $@
 EOF
 
 echo "-----> Script is:"
 cat $ABCL_BIN
 chmod a+x $ABCL_BIN
-#$ABCL_BIN
+$ABCL_BIN
 
 echo "-----> END OF COMPILE"
 
