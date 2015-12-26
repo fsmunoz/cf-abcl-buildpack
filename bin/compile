@@ -92,6 +92,6 @@ EOF
 
 echo "-----> Script is:"
 cat $ABCL_VARS
-chmod a+x ABCL_VARS
+chmod a+x $ABCL_VARS
 echo "-----> END OF COMPILE"
 #exec $ABCL --load $CACHE_DIR/init.lisp
