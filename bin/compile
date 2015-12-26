@@ -148,6 +148,16 @@ chmod a+x $ABCL_BIN
 sh -x $ABCL_BIN --load $INIT
 echo "----> Rerun...."
 
-sh -x $ABCL_BIN --load $USER_INIT
+INIT2=$BUILD_DIR/.init2.lisp
+
+cat > $INIT2 <<EOF
+(load "~/quicklisp/setup.lisp")
+(require :abcl-contrib)
+(push "$BUILD_DIR/" asdf:*central-registry*)
+(load "$USER_INIT")
+EOF
+cat $INIT2
+
+sh -x $ABCL_BIN --load $INIT2
 echo "-----> END OF COMPILE"
 
