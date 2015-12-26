@@ -58,7 +58,7 @@ fi
 
 # Make sure new JDK is visible
 export PATH="$HOME/app/.jdk/bin:$HOME/.jdk/bin:$PATH"
-export JAVA_HOME=""$HOME/app/.jdk"
+export JAVA_HOME="$HOME/app/.jdk"
 
 
 ABCL_JAR_URL="https://common-lisp.net/project/armedbear/releases/current/abcl.jar"
