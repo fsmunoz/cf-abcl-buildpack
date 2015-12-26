@@ -5,7 +5,7 @@ cat <<EOF
 ---
 config_vars:
   PATH: $1:/usr/local/bin:/usr/bin:/bin
-  JVM_OPTS: -server -Xrs -Xmx400m
+  JVM_OPTS:
 default_process_types:
   web: abcl
 EOF
