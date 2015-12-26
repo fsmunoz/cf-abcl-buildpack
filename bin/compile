@@ -91,11 +91,11 @@ JAVA=$(which java)
 INIT=$INIT
 #ABCL="$JAVA \$JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main --load $INIT"
 ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main --load $INIT"
+exec $ABCL "$@"
 EOF
 
 echo "-----> Script is:"
 cat $ABCL_BIN
 chmod a+x $ABCL_BIN
-sh -x $ABCL_BIN
 echo "-----> END OF COMPILE"
 
