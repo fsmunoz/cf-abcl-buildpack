@@ -4,6 +4,10 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 
 # From https://github.com/trautonen/heroku-buildpack-oracle-java
+maven_version() {
+  base=$1
+  echo $(${base}mvn --version 2>&1 | head -n 1 | cut -d ' ' -f 3)
+}
 
 install_maven() {
   cache_dir=$1
