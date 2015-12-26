@@ -70,6 +70,7 @@ cat > $INIT <<EOF
 (load "$QUICKLISP_PATH")
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
+(push "$BUILD_DIR/" asdf:*central-registry*)
 (load "$USER_INIT")
 EOF
 
@@ -81,7 +82,7 @@ cat $INIT
 #ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 echo "------> Configuring ASDF"
-ASDF_CONFIG_PATH=" ~/.config/common-lisp/source-registry.conf.d/build.conf"
+ASDF_CONFIG_PATH="$BUILD_DIR/.config/common-lisp/source-registry.conf.d/build.conf"
 mkdir -p $(dirname $ASDF_CONFIG_PATH)
 cat > ASDF_CONFIG_PATH <<EOF
 (:directory "$BUILD_DIR")
