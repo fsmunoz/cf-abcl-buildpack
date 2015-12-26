@@ -137,13 +137,15 @@ ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.l
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
-exec $ABCL "$@"
+exec $ABCL "\$@"
 EOF
 
 echo "-----> Script is:"
 cat $ABCL_BIN
+
 chmod a+x $ABCL_BIN
-$ABCL_BIN --load $INIT
+
+sh -x $ABCL_BIN --load $INIT
 
 echo "-----> END OF COMPILE"
 
