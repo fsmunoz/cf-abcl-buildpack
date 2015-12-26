@@ -110,6 +110,7 @@ cat > $INIT <<EOF
 (require :abcl-contrib)
 (push "$BUILD_DIR/" asdf:*central-registry*)
 (ql:quickload "abcl-bluemix")
+(quit)
 EOF
 
 echo "init script is:"
@@ -132,7 +133,7 @@ echo "-----> Creating executable"
 ABCL_BIN=$BUILD_DIR/abcl
 JAVA=$(which java)
 JVM_OPTS="-server -Xrs"
-ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main --load $INIT"
+ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
@@ -142,7 +143,7 @@ EOF
 echo "-----> Script is:"
 cat $ABCL_BIN
 chmod a+x $ABCL_BIN
-$ABCL_BIN --eval '(quit)'
+$ABCL_BIN  --load $INIT
 
 echo "-----> END OF COMPILE"
 

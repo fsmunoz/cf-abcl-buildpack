@@ -7,5 +7,5 @@ config_vars:
   PATH: $1:/usr/local/bin:/usr/bin:/bin
   JVM_OPTS:
 default_process_types:
-  web: abcl --eval '(ql:quickload "abcl-bluemix")'
+  web: abcl --load cf-setup.lisp'
 EOF
