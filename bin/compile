@@ -62,7 +62,7 @@ fi
 
 # Make sure new JDK is visible
 echo "--->Setting JAVA"
-export JAVA_HOME="$HOME/app/.jdk"
+export JAVA_HOME="$BUILD_DIR/app/.jdk"
 ls $JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
