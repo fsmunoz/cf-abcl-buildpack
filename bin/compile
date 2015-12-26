@@ -54,18 +54,40 @@ fi
 QUICKLISP_URL="https://beta.quicklisp.org/quicklisp.lisp"
 QUICKLISP_PATH="$CACHE_DIR/quicklisp.lisp"
 echo "-----> Downloading Quicklisp"
-curl -o QUICKLISP_PATH  QUICKLISP_URL
+curl --silent --show-error --max-time 120 -L -o $QUICKLISP_PATH  QUICKLISP_URL
 
-SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev/null)
 echo "-----> Getting system from ASDF: $SYSTEM"
+SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev/null)
 
-cat > $CACHE_DIR/init.lisp <<EOF
+
+echo "-----> Building init script"
+INIT=$BUILD_DIR/.init.lisp
+cat > $INIT <<EOF
 (load "$QUICKLISP_PATH")
 (quicklisp-quickstart:install)
+(require :abcl-contrib)
 (ql:quickload "$SYSTEM")
 EOF
 
+echo "init script is:"
+cat $INIT
+
+
+#JAVA=$(which java)
+#ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
+
+
+echo "-----> Building vars"
+ABCL_VARS=$BUILD_DIR/.vars
+
+cat > $ABCL_VARS <<EOF
+#!/bin/sh
 JAVA=$(which java)
-ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
-echo "-----> Launching the Bear and quickloading the system."
-exec $ABCL --load $CACHE_DIR/init.lisp
+INIT=$INIT
+ABCL="$JAVA \$JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
+EOF
+
+echo "-----> Script is:"
+cat $ABCL_VARS
+echo "-----> END OF COMPILE"
+#exec $ABCL --load $CACHE_DIR/init.lisp

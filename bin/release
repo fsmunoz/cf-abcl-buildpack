@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# bin/release <build-dir>
+source .vars
+
+cat <<EOF
+---
+config_vars:
+  PATH: /usr/local/bin:/usr/bin:/bin
+  JVM_OPTS: -server -Xrs -Xmx400m
+default_process_types:
+  web: $ABCL  --load $INIT"
+EOF
