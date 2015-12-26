@@ -3,6 +3,32 @@
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+# From https://github.com/trautonen/heroku-buildpack-oracle-java
+
+install_maven() {
+  cache_dir=$1
+  maven_url=${2:-"http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"}
+  maven_ver=${3:-"3.3.9"}
+
+  if [ ! -d "${cache_dir}" ]; then error "Invalid cache directory to store Maven."; fi
+
+  if [ ! -f "${cache_dir}/.maven/bin/mvn" ] || [ "${maven_ver}" != "$(maven_version ${cache_dir}/.maven/bin/)" ]; then
+    echo -n " (downloading...)"
+    rm -rf "${cache_dir}/.maven" && mkdir -p "${cache_dir}/.maven"
+    curl -s -j -k -L "${maven_url}" | tar xz -C "${cache_dir}/.maven" --strip-components=1
+  fi
+  
+  if [ ! -f "${cache_dir}/.maven/bin/mvn" ]; then
+    error "Unable to retrieve Maven."
+  fi
+  
+  export MAVEN_OPTS=${MAVEN_OPTS:-"-Xmx384m -Xss128m"}
+  export M2_HOME="${cache_dir}/.maven"
+  export M2="${M2_HOME}/bin"
+  export PATH="${M2}:${PATH}"
+}
+
+
 echo "=== Starting compile, build: $BUILD_DIR ; cache: $CACHE_DIR"
 
 # Load common JVM functionality from https://github.com/heroku/heroku-buildpack-jvm-common
@@ -49,6 +75,8 @@ if [ ! -r "$ABCL_JAR_PATH" ]; then
 else
     echo "-----> Using cached ABCL jars"
 fi
+echo "-----> Installing maven"
+install_maven $CACHE_DIR
 
 ### Quicklisp
 QUICKLISP_URL="https://beta.quicklisp.org/quicklisp.lisp"
@@ -81,12 +109,12 @@ cat $INIT
 #JAVA=$(which java)
 #ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
-echo "------> Configuring ASDF"
-ASDF_CONFIG_PATH="$BUILD_DIR/.config/common-lisp/source-registry.conf.d/build.conf"
-mkdir -p $(dirname $ASDF_CONFIG_PATH)
-cat > ASDF_CONFIG_PATH <<EOF
-(:directory "$BUILD_DIR")
-EOF
+# echo "------> Configuring ASDF"
+# ASDF_CONFIG_PATH="$BUILD_DIR/.config/common-lisp/source-registry.conf.d/build.conf"
+# mkdir -p $(dirname $ASDF_CONFIG_PATH)
+# cat > ASDF_CONFIG_PATH <<EOF
+# (:directory "$BUILD_DIR")
+# EOF
 
 cat $ASDF_CONFIG_PATH
 
