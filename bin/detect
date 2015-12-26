@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Check every .asd file for the presence of "abcl-asdf", something
+# which only makes sense when using ABCL
+
+if grep "abcl-asdf" ${1}/*.asd > /dev/null 2>&1; then
+    echo "ABCL"
+    exit 0
+else
+    exit 1
+fi
