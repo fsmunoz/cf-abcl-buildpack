@@ -36,13 +36,13 @@ export PATH="$HOME/app/.jdk/bin:$HOME/.jdk/bin:$PATH"
 
 ABCL_JAR_URL="https://common-lisp.net/project/armedbear/releases/current/abcl.jar"
 ABCL_JAR_PATH="$CACHE_DIR/abcl.jar"
-ABCL_CONTRIB_JAR_URL=https://common-lisp.net/project/armedbear/releases/current/abcl-contrib.jar
+ABCL_CONTRIB_JAR_URL="https://common-lisp.net/project/armedbear/releases/current/abcl-contrib.jar"
 ABCL_CONTRIB_JAR_PATH="$CACHE_DIR/abcl-contrib.jar"
 
 if [ ! -r "$ABCL_JAR_PATH" ]; then
     echo "-----> Downloading ABCL"
     echo "       Downloading abcl.jar"
-    dir -p $(dirname $ABCL_JAR_PATH)
+    mkdir -p $(dirname $ABCL_JAR_PATH)
     curl --silent --show-error --max-time 120 -L -o $ABCL_JAR_PATH $ABCL_JAR_URL
     echo "       Downloading abcl-contrib.jar"
     curl --silent --show-error --max-time 120 -L -o $ABCL_CONTRIB_JAR_PATH $ABCL_CONTRIB_JAR_URL
@@ -50,4 +50,22 @@ else
     echo "-----> Using cached ABCL jars"
 fi
 
-java -version
+### Quicklisp
+QUICKLISP_URL="https://beta.quicklisp.org/quicklisp.lisp"
+QUICKLISP_PATH="$CACHE_DIR/quicklisp.lisp"
+echo "-----> Downloading Quicklisp"
+curl -o QUICKLISP_PATH  QUICKLISP_URL
+
+SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev/null)
+echo "-----> Getting system from ASDF: $SYSTEM"
+
+cat > $CACHE_DIR/init.lisp <<EOF
+(load "$QUICKLISP_PATH")
+(quicklisp-quickstart:install)
+(ql:quickload "$SYSTEM")
+EOF
+
+JAVA=$(which java)
+ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
+echo "-----> Launching the Bear and quickloading the system."
+exec $ABCL --load $CACHE_DIR/init.lisp
