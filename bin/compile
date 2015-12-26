@@ -142,7 +142,7 @@ EOF
 echo "-----> Script is:"
 cat $ABCL_BIN
 chmod a+x $ABCL_BIN
-$ABCL_BIN
+$ABCL_BIN --eval '(quit)'
 
 echo "-----> END OF COMPILE"
 
