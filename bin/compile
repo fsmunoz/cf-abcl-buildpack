@@ -84,7 +84,7 @@ cat $INIT
 echo "-----> Building shared vars file"
 ABCL_BIN=$BUILD_DIR/abcl
 JAVA=$(which java)
-JVM_OPTS="-server -Xrs -Xmx400m"
+JVM_OPTS="-server -Xrs"
 ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main --load $INIT"
 
 cat > $ABCL_BIN <<EOF
