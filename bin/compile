@@ -54,7 +54,7 @@ fi
 QUICKLISP_URL="https://beta.quicklisp.org/quicklisp.lisp"
 QUICKLISP_PATH="$CACHE_DIR/quicklisp.lisp"
 echo "-----> Downloading Quicklisp"
-curl --silent --show-error --max-time 120 -L -o $QUICKLISP_PATH  QUICKLISP_URL
+curl --silent --show-error --max-time 120 -L -o $QUICKLISP_PATH  $QUICKLISP_URL
 
 echo "-----> Getting system from ASDF: $SYSTEM"
 SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev/null)
@@ -79,6 +79,7 @@ cat $INIT
 
 echo "-----> Building vars"
 ABCL_VARS=$BUILD_DIR/.vars
+JAVA=$(which java)
 
 cat > $ABCL_VARS <<EOF
 #!/bin/sh
