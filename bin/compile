@@ -137,7 +137,8 @@ ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.l
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
-echo "ABCL script, running with \$@ args..."
+export PATH=\$PATH:$M2
+echo "ABCL script, running with \$@ args and $PATH..."
 exec $ABCL "\$@"
 EOF
 
@@ -158,6 +159,7 @@ cat > $INIT2 <<EOF
 (load "$USER_INIT")
 EOF
 cat $INIT2
+
 
 #sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
