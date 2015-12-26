@@ -146,6 +146,8 @@ cat $ABCL_BIN
 chmod a+x $ABCL_BIN
 
 sh -x $ABCL_BIN --load $INIT
+echo "----> Rerun...."
 
+sh -x $ABCL_BIN --load $USER_INIT
 echo "-----> END OF COMPILE"
 
