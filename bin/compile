@@ -59,6 +59,8 @@ curl --silent --show-error --max-time 120 -L -o $QUICKLISP_PATH  $QUICKLISP_URL
 echo "-----> Getting system from ASDF: $SYSTEM"
 SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev/null)
 
+echo "----> DIR CONTENTS"
+ls -larth $BUILD_DIR
 
 echo "-----> Building init script"
 INIT=$BUILD_DIR/.init.lisp
