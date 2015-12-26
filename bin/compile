@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+echo "=== Starting compile, build: $BUILD_DIR ; cache: $CACHE_DIR"
+
+echo "java -version"
