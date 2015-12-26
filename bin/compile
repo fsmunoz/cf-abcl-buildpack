@@ -5,4 +5,49 @@ CACHE_DIR=$2
 
 echo "=== Starting compile, build: $BUILD_DIR ; cache: $CACHE_DIR"
 
-echo "java -version"
+# Load common JVM functionality from https://github.com/heroku/heroku-buildpack-jvm-common
+JVM_COMMON_BUILDPACK=https://heroku-jvm-common.s3.amazonaws.com/jvm-buildpack-common.tar.gz
+curl --silent --location $JVM_COMMON_BUILDPACK | tar -x bin/java -zO > /tmp/jvm-common
+source /tmp/jvm-common
+
+# JDK version
+if [ -z "$JAVA_VERSION" ]; then # could be set using user_env_compile
+    if [ -f "${BUILD_DIR}/system.properties" ]; then
+        JAVA_VERSION=$(get_app_system_value ${BUILD_DIR}/system.properties "java.runtime.version")
+    else
+        JAVA_VERSION=$DEFAULT_JDK_VERSION
+    fi
+fi
+
+# Install JDK
+if [ "$(is_supported_java_version ${JAVA_VERSION})" = "true" ]; then
+    echo -n "-----> Installing OpenJDK ${JAVA_VERSION}..."
+    install_java ${BUILD_DIR} ${JAVA_VERSION}
+    jdk_overlay ${BUILD_DIR}
+    echo "done"
+else
+    echo " !     Unsupported Java version: $JAVA_VERSION"
+    exit 1
+fi
+
+# Make sure new JDK is visible
+export PATH="$HOME/app/.jdk/bin:$HOME/.jdk/bin:$PATH"
+
+
+ABCL_JAR_URL="https://common-lisp.net/project/armedbear/releases/current/abcl.jar"
+ABCL_JAR_PATH="$CACHE_DIR/abcl.jar"
+ABCL_CONTRIB_JAR_URL=https://common-lisp.net/project/armedbear/releases/current/abcl-contrib.jar
+ABCL_CONTRIB_JAR_PATH="$CACHE_DIR/abcl-contrib.jar"
+
+if [ ! -r "$ABCL_JAR_PATH" ]; then
+    echo "-----> Downloading ABCL"
+    echo "       Downloading abcl.jar"
+    dir -p $(dirname $ABCL_JAR_PATH)
+    curl --silent --show-error --max-time 120 -L -o $ABCL_JAR_PATH $ABCL_JAR_URL
+    echo "       Downloading abcl-contrib.jar"
+    curl --silent --show-error --max-time 120 -L -o $ABCL_CONTRIB_JAR_PATH $ABCL_CONTRIB_JAR_URL
+else
+    echo "-----> Using cached ABCL jars"
+fi
+
+java -version
