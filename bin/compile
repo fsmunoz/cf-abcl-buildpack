@@ -159,7 +159,6 @@ cat > $INIT2 <<EOF
 EOF
 cat $INIT2
 
-
 ## Prepare for post-stage environment
 
 export JAVA_HOME="~/.jdk"
@@ -167,9 +166,9 @@ export M2_HOME="~/.maven"
 export M2="${M2_HOME}/bin"
 export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
 
-cat > $ABCL_BIN <<EOF
+
+/bin/cat > $ABCL_BIN <<EOF
 #!/bin/sh
-/bin/sleep 30
 export PATH=$PATH
 export JAVA_HOME=$JAVA_HOME
 echo "ABCL script, running with \$@ args and $PATH"
