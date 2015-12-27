@@ -186,6 +186,12 @@ export JAVA_HOME='~/.jdk'
 echo "ABCL script, running with \$@ args and \$PATH"
 echo "MVN"
 file mvn
+echo "PWD"
+pwd
+echo "MVN by home"
+file ~/.maven/bin/mvn
+echo "MVN by relative"
+file ./.maven/bin/mvn
 exec $ABCL --load .init2.lisp
 EOF
 
