@@ -162,7 +162,7 @@ cat $INIT2
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
-export PATH=\$PATH:$M2
+export PATH=$PATH:$M2
 echo "ABCL script, running with \$@ args and $PATH"
 exec $ABCL --load $INIT2
 EOF
