@@ -163,7 +163,7 @@ cat $INIT2
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
-sleep 30
+/bin/sleep 30
 export PATH=$PATH:$M2
 export JAVA_HOME="$BUILD_DIR/.jdk"
 echo "ABCL script, running with \$@ args and $PATH"
