@@ -138,8 +138,8 @@ cat $INIT
 cat $ASDF_CONFIG_PATH
 
 echo "-----> Creating executable"
-ABCL_BIN="~/abcl"
-JAVA="~/.jdk/bin/java"
+ABCL_BIN="./abcl"
+JAVA="./.jdk/bin/java"
 JVM_OPTS="-server -Xrs"
 ABCL="java $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
@@ -170,9 +170,9 @@ cat $INIT2
 
 ## Prepare for post-stage environment
 
-export JAVA_HOME="~/.jdk"
+export JAVA_HOME="./.jdk"
 export JAVA="$JAVA_HOME/bin/java"
-export M2_HOME="~/.maven"
+export M2_HOME="./.maven"
 export M2="${M2_HOME}/bin"
 export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
 
