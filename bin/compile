@@ -160,7 +160,15 @@ cat > $INIT2 <<EOF
 EOF
 cat $INIT2
 
+cat > $ABCL_BIN <<EOF
+#!/bin/sh
+export PATH=\$PATH:$M2
+echo "ABCL script, running with \$@ args and $PATH"
+exec $ABCL --load $INIT2
+EOF
 
+echo "----"
+cat $ABCL_BIN
 #sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
 echo "-----> END OF COMPILE"

@@ -6,5 +6,5 @@ cat <<EOF
 config_vars:
   PATH: ${1}:/usr/local/bin:/usr/bin:/bin:/tmp/cache/.maven/bin:/tmp/staged/app::/tmp/staged/app/.jdk/bin
 default_process_types:
-  web: ${1}/abcl --load ${1}/.init2.lisp
+  web: ${1}/abcl
 EOF
