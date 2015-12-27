@@ -192,7 +192,8 @@ echo "----"
 
 #/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
-echo "---- BUILD"-----"
+
+echo "---- BUILD -----"
 ls -larth $BUILD_DIR
 echo "---- HOME -----"
 ls -larth $HOME
