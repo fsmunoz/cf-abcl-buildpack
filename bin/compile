@@ -199,5 +199,10 @@ echo "---- HOME -----"
 ls -larth $HOME
 echo "---- PWD ----"
 ls -larth
-echo "-----> END OF COMPILE"
 
+
+cp -r $HOME/quicklisp $BUILD_DIR
+cp -r $HOME/.m2 $BUILD_DIR
+
+
+echo "-----> END OF COMPILE -----------------------"
