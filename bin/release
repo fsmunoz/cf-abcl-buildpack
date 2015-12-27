@@ -6,6 +6,7 @@ cat <<EOF
 config_vars:
   PATH: .abcl:.maven/bin:.jdk/bin:/usr/local/bin:/usr/bin:/bin
   JAVA_HOME: .jdk
+  JVM_OPTS: -server -Xrs
 default_process_types:
-  web: abcl
+  web: abcl --load .init2.lisp
 EOF
