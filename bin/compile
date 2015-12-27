@@ -171,11 +171,11 @@ cat $INIT2
 
 ## Prepare for post-stage environment
 
-export JAVA_HOME="./.jdk"
-export JAVA="$JAVA_HOME/bin/java"
-export M2_HOME="./.maven"
-export M2="${M2_HOME}/bin"
-export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
+#export JAVA_HOME="./.jdk"
+#export JAVA="$JAVA_HOME/bin/java"
+#export M2_HOME="./.maven"
+#export M2="${M2_HOME}/bin"
+#export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
 
 ABCL="$JAVA $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
@@ -188,7 +188,7 @@ exec $ABCL --load $INIT2
 EOF
 
 echo "----"
-cat $ABCL_BIN
+/bin/cat $ABCL_BIN
 
 #/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
