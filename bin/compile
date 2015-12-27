@@ -169,8 +169,8 @@ export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
 
 /bin/cat > $ABCL_BIN <<EOF
 #!/bin/sh
-export PATH=$PATH
-export JAVA_HOME=$JAVA_HOME
+export PATH=~/.jdk/bin:~/.maven/bin:/bin:/usr/bin
+export JAVA_HOME=~/.jdk
 echo "ABCL script, running with \$@ args and $PATH"
 exec $ABCL --load $INIT2
 EOF
