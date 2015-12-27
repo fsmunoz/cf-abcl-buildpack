@@ -160,6 +160,7 @@ cat > $INIT2 <<EOF
 EOF
 cat $INIT2
 
+
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
 sleep 30
@@ -171,7 +172,14 @@ EOF
 
 echo "----"
 cat $ABCL_BIN
-#sh -x $ABCL_BIN --load $INIT2
+export PATH=
+export JAVA_HOME=
+export M2=
+export ABCL=
+export INIT2=
+export INIT=
+
+sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
 ls -larth
 echo "-----> END OF COMPILE"
