@@ -2,6 +2,10 @@
 # bin/compile <build-dir> <cache-dir>
 BUILD_DIR=$1
 CACHE_DIR=$2
+ABCL_DIR="$BUILD_DIR/.abcl"
+
+echo "------> Creating .abcl dir"
+mkdir $ABCL_DIR
 
 # From https://github.com/trautonen/heroku-buildpack-oracle-java
 maven_version() {
@@ -86,11 +90,11 @@ else
     echo "-----> Using cached ABCL jars"
 fi
 echo "------> Copying ABCL jars to build directory..."
-cp $ABCL_JAR_PATH $BUILD_DIR
-cp $ABCL_CONTRIB_JAR_PATH $BUILD_DIR
+cp $ABCL_JAR_PATH $ABCL_DIR
+cp $ABCL_CONTRIB_JAR_PATH $ABCL_DIR
 
-ABCL_JAR_PATH="$BUILD_DIR/abcl.jar"
-ABCL_CONTRIB_JAR_PATH="$BUILD_DIR/abcl-contrib.jar"
+ABCL_JAR_PATH="$ABCL_DIR/abcl.jar"
+ABCL_CONTRIB_JAR_PATH="$ABCL_DIR/abcl-contrib.jar"
 cp
 echo "-----> Installing maven"
 install_maven $CACHE_DIR
@@ -139,7 +143,7 @@ cat $INIT
 cat $ASDF_CONFIG_PATH
 
 echo "-----> Creating executable"
-ABCL_BIN="$BUILD_DIR/abcl"
+ABCL_BIN="$ABCL_DIR/abcl"
 JAVA="./.jdk/bin/java"
 JVM_OPTS="-server -Xrs"
 ABCL="java $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
@@ -179,10 +183,10 @@ cat $INIT2
 
 ABCL="java $JVM_OPTS -cp abcl.jar:abcl-contrib.jar org.armedbear.lisp.Main"
 
-/bin/cat > $ABCL_BIN <<EOF
+cat > $ABCL_BIN <<EOF
 #!/bin/sh
-export PATH='~/.jdk/bin:~/.maven/bin:/bin:/usr/bin:/home/vcap/app/.maven/bin'
-export JAVA_HOME='~/.jdk'
+#export PATH='~/.jdk/bin:~/.maven/bin:/bin:/usr/bin:/home/vcap/app/.maven/bin'
+#export JAVA_HOME='~/.jdk'
 echo "ABCL script, running with \$@ args and \$PATH"
 echo "MVN"
 file mvn
@@ -198,7 +202,7 @@ exec $ABCL --load .init2.lisp
 EOF
 
 echo "----"
-/bin/cat $ABCL_BIN
+cat $ABCL_BIN
 
 #/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
