@@ -10,7 +10,7 @@ maven_version() {
 }
 
 install_maven() {
-    cache-dir=$1
+    cache_dir=$1
   maven_url=${2:-"http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"}
   maven_ver=${3:-"3.3.9"}
 
