@@ -184,7 +184,7 @@ ABCL="$JAVA $JVM_OPTS -cp abcl.jar:abcl-contrib.jar org.armedbear.lisp.Main"
 export PATH="~/.jdk/bin:~/.maven/bin:/bin:/usr/bin"
 export JAVA_HOME="~/.jdk"
 echo "ABCL script, running with \$@ args and $PATH"
-exec $ABCL --load $INIT2
+exec $ABCL --load .init2.lisp
 EOF
 
 echo "----"
