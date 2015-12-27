@@ -192,6 +192,8 @@ echo "MVN by home"
 file ~/.maven/bin/mvn
 echo "MVN by relative"
 file ./.maven/bin/mvn
+echo "JAVA"
+type java
 exec $ABCL --load .init2.lisp
 EOF
 
