@@ -4,7 +4,7 @@
 cat <<EOF
 ---
 config_vars:
-  PATH: .maven/bin:.jdk/bin:/usr/local/bin:/usr/bin:/bin
+  PATH: .abcl:.maven/bin:.jdk/bin:/usr/local/bin:/usr/bin:/bin
   JAVA_HOME: .jdk
 default_process_types:
   web: abcl
