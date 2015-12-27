@@ -208,12 +208,12 @@ cat $ABCL_BIN
 #/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
 
-echo "---- BUILD -----"
-ls -larth $BUILD_DIR
-echo "---- HOME -----"
-ls -larth $HOME
-echo "---- PWD ----"
-ls -larth
+# echo "---- BUILD -----"
+# ls -larth $BUILD_DIR
+# echo "---- HOME -----"
+# ls -larth $HOME
+# echo "---- PWD ----"
+# ls -larth
 
 
 cp -r $HOME/quicklisp $BUILD_DIR
