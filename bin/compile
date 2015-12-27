@@ -179,7 +179,7 @@ export ABCL=
 export INIT2=
 export INIT=
 
-/bin/sh -x $ABCL_BIN --load $INIT2
+#/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
 #ls -larth
 echo "-----> END OF COMPILE"
