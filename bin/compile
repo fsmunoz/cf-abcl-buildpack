@@ -181,7 +181,7 @@ cat $INIT2
 #export M2="${M2_HOME}/bin"
 #export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
 
-ABCL="java $JVM_OPTS -cp abcl.jar:abcl-contrib.jar org.armedbear.lisp.Main"
+ABCL="java $JVM_OPTS -cp .abcl/abcl.jar:.abcl/abcl-contrib.jar org.armedbear.lisp.Main"
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
@@ -195,7 +195,7 @@ pwd
 echo "MVN by home"
 file ~/.maven/bin/mvn
 echo "MVN by relative"
-file ./.maven/bin/mvn
+file .maven/bin/mvn
 echo "JAVA"
 type java
 exec $ABCL --load .init2.lisp
