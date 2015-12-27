@@ -138,7 +138,7 @@ cat $INIT
 cat $ASDF_CONFIG_PATH
 
 echo "-----> Creating executable"
-ABCL_BIN="./abcl"
+ABCL_BIN="$BUILD_DIR/abcl"
 JAVA="./.jdk/bin/java"
 JVM_OPTS="-server -Xrs"
 ABCL="java $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
@@ -161,9 +161,9 @@ echo "----> Rerun...."
 INIT2=$BUILD_DIR/.init2.lisp
 
 cat > $INIT2 <<EOF
-(load "\~/quicklisp/setup.lisp")
+(load "~/quicklisp/setup.lisp")
 (require :abcl-contrib)
-(push "\~/" asdf:*central-registry*)
+(push "~/" asdf:*central-registry*)
 (load "$USER_INIT")
 EOF
 cat $INIT2
