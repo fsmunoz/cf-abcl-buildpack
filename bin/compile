@@ -188,12 +188,6 @@ EOF
 
 echo "----"
 cat $ABCL_BIN
-export PATH=
-export JAVA_HOME=
-export M2=
-export ABCL=
-export INIT2=
-export INIT=
 
 #/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
