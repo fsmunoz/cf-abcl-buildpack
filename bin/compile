@@ -2,7 +2,7 @@
 # bin/compile <build-dir> <cache-dir>
 BUILD_DIR=$1
 CACHE_DIR=$2
-export HOME=$BUILD_DIR
+
 # From https://github.com/trautonen/heroku-buildpack-oracle-java
 maven_version() {
   base=$1
@@ -192,6 +192,11 @@ echo "----"
 
 #/bin/sh -x $ABCL_BIN --load $INIT2
 #$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
-#ls -larth
+echo "---- BUILD"-----"
+ls -larth $BUILD_DIR
+echo "---- HOME -----"
+ls -larth $HOME
+echo "---- PWD ----"
+ls -larth
 echo "-----> END OF COMPILE"
 
