@@ -10,24 +10,23 @@ maven_version() {
 }
 
 install_maven() {
-  cache_dir=$1
   maven_url=${2:-"http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"}
   maven_ver=${3:-"3.3.9"}
 
-  if [ ! -d "${cache_dir}" ]; then error "Invalid cache directory to store Maven."; fi
+  if [ ! -d "${BUILD_DIR}" ]; then error "Invalid cache directory to store Maven."; fi
 
-  if [ ! -f "${cache_dir}/.maven/bin/mvn" ] || [ "${maven_ver}" != "$(maven_version ${cache_dir}/.maven/bin/)" ]; then
+  if [ ! -f "${BUILD_DIR}/.maven/bin/mvn" ] || [ "${maven_ver}" != "$(maven_version ${BUILD_DIR}/.maven/bin/)" ]; then
     echo -n " (downloading...)"
-    rm -rf "${cache_dir}/.maven" && mkdir -p "${cache_dir}/.maven"
-    curl -s -j -k -L "${maven_url}" | tar xz -C "${cache_dir}/.maven" --strip-components=1
+    rm -rf "${BUILD_DIR}/.maven" && mkdir -p "${BUILD_DIR}/.maven"
+    curl -s -j -k -L "${maven_url}" | tar xz -C "${BUILD_DIR}/.maven" --strip-components=1
   fi
   
-  if [ ! -f "${cache_dir}/.maven/bin/mvn" ]; then
+  if [ ! -f "${BUILD_DIR}/.maven/bin/mvn" ]; then
     error "Unable to retrieve Maven."
   fi
   
   export MAVEN_OPTS=${MAVEN_OPTS:-"-Xmx384m -Xss128m"}
-  export M2_HOME="${cache_dir}/.maven"
+  export M2_HOME="${BUILD_DIR}/.maven"
   export M2="${M2_HOME}/bin"
   export PATH="${M2}:${PATH}"
 }
@@ -161,11 +160,18 @@ EOF
 cat $INIT2
 
 
+## Prepare for post-stage environment
+
+export JAVA_HOME="~/.jdk"
+export M2_HOME="~/.maven"
+export M2="${M2_HOME}/bin"
+export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
+
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
 /bin/sleep 30
-export PATH=$PATH:$M2
-export JAVA_HOME="$BUILD_DIR/.jdk"
+export PATH=$PATH
+export JAVA_HOME=$JAVA_HOME
 echo "ABCL script, running with \$@ args and $PATH"
 exec $ABCL --load $INIT2
 EOF
