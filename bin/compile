@@ -93,7 +93,8 @@ ABCL_JAR_PATH="$BUILD_DIR/abcl.jar"
 ABCL_CONTRIB_JAR_PATH="$BUILD_DIR/abcl-contrib.jar"
 cp
 echo "-----> Installing maven"
-install_maven $BUILD_DIR
+install_maven $CACHE_DIR
+cp -r $CACHE_DIR/.maven $BUILD_DIR
 
 ### Quicklisp
 QUICKLISP_URL="https://beta.quicklisp.org/quicklisp.lisp"
