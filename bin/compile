@@ -198,7 +198,8 @@ echo "ABCL script, running with \$@ args and \$PATH"
 # file .maven/bin/mvn
 # echo "JAVA"
 # type java
-exec java \$JVM_OPTS -cp .abcl/abcl.jar:.abcl/abcl-contrib.jar org.armedbear.lisp.Main --load .init2.lisp
+exec java \$JVM_OPTS -cp .abcl/abcl.jar:.abcl/abcl-contrib.jar org.armedbear.lisp.Main "\$@"
+#--load .init2.lisp
 EOF
 
 echo "----"
