@@ -113,7 +113,7 @@ INIT="./.init.lisp"
 USER_INIT="./cf-setup.lisp"
 
 cat > $INIT <<EOF
-(load "quicklisp.lisp")
+(load "$BUILD_DIR/quicklisp.lisp")
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
 (push "$BUILD_DIR/" asdf:*central-registry*)
@@ -161,9 +161,9 @@ echo "----> Rerun...."
 INIT2=$BUILD_DIR/.init2.lisp
 
 cat > $INIT2 <<EOF
-(load "~/quicklisp/setup.lisp")
+(load "\~/quicklisp/setup.lisp")
 (require :abcl-contrib)
-(push "./" asdf:*central-registry*)
+(push "\~/" asdf:*central-registry*)
 (load "$USER_INIT")
 EOF
 cat $INIT2
