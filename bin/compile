@@ -138,7 +138,7 @@ ABCL="$JAVA $JVM_OPTS: -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.l
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
 export PATH=\$PATH:$M2
-echo "ABCL script, running with \$@ args and $PATH..."
+echo "ABCL script, running with \$@ args and $PATH"
 exec $ABCL "\$@"
 EOF
 
