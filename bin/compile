@@ -45,7 +45,7 @@ curl --silent --location $JVM_COMMON_BUILDPACK | tar -x bin/java -zO > /tmp/jvm-
 source /tmp/jvm-common
 
 # Set JDK version to 1.7
-JAVA_VERSION=1.7
+JAVA_VERSION=1.8
 
 if [ -z "$JAVA_VERSION" ]; then # could be set using user_env_compile
     if [ -f "${BUILD_DIR}/system.properties" ]; then
