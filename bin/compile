@@ -10,23 +10,24 @@ maven_version() {
 }
 
 install_maven() {
+    cache-dir=$1
   maven_url=${2:-"http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"}
   maven_ver=${3:-"3.3.9"}
 
-  if [ ! -d "${BUILD_DIR}" ]; then error "Invalid cache directory to store Maven."; fi
+  if [ ! -d "${cache_dir}" ]; then error "Invalid cache directory to store Maven."; fi
 
-  if [ ! -f "${BUILD_DIR}/.maven/bin/mvn" ] || [ "${maven_ver}" != "$(maven_version ${BUILD_DIR}/.maven/bin/)" ]; then
+  if [ ! -f "${cache_dir}/.maven/bin/mvn" ] || [ "${maven_ver}" != "$(maven_version ${cache_dir}/.maven/bin/)" ]; then
     echo -n " (downloading...)"
-    rm -rf "${BUILD_DIR}/.maven" && mkdir -p "${BUILD_DIR}/.maven"
-    curl -s -j -k -L "${maven_url}" | tar xz -C "${BUILD_DIR}/.maven" --strip-components=1
+    rm -rf "${cache_dir}/.maven" && mkdir -p "${cache_dir}/.maven"
+    curl -s -j -k -L "${maven_url}" | tar xz -C "${cache_dir}/.maven" --strip-components=1
   fi
   
-  if [ ! -f "${BUILD_DIR}/.maven/bin/mvn" ]; then
+  if [ ! -f "${cache_dir}/.maven/bin/mvn" ]; then
     error "Unable to retrieve Maven."
   fi
   
   export MAVEN_OPTS=${MAVEN_OPTS:-"-Xmx384m -Xss128m"}
-  export M2_HOME="${BUILD_DIR}/.maven"
+  export M2_HOME="${cache_dir}/.maven"
   export M2="${M2_HOME}/bin"
   export PATH="${M2}:${PATH}"
 }
@@ -84,14 +85,22 @@ if [ ! -r "$ABCL_JAR_PATH" ]; then
 else
     echo "-----> Using cached ABCL jars"
 fi
+echo "------> Copying ABCL jars to build directory..."
+cp $ABCL_JAR_PATH $BUILD_DIR
+cp $ABCL_CONTRIB_JAR_PATH $BUILD_DIR
+
+ABCL_JAR_PATH="$BUILD_DIR/abcl.jar"
+ABCL_CONTRIB_JAR_PATH="$BUILD_DIR/abcl-contrib.jar"
+cp
 echo "-----> Installing maven"
-install_maven $CACHE_DIR
+install_maven $BUILD_DIR
 
 ### Quicklisp
 QUICKLISP_URL="https://beta.quicklisp.org/quicklisp.lisp"
-QUICKLISP_PATH="$CACHE_DIR/quicklisp.lisp"
+QUICKLISP_PATH="$BUILD_DIR/quicklisp.lisp"
 echo "-----> Downloading Quicklisp"
 curl --silent --show-error --max-time 120 -L -o $QUICKLISP_PATH  $QUICKLISP_URL
+
 
 echo "-----> Getting system from ASDF: $SYSTEM"
 SYSTEM=$(awk '/asdf:defsystem/ {gsub("#:","");print $2}' $BUILD_DIR/*.asd 2>/dev/null)
@@ -100,11 +109,11 @@ echo "----> DIR CONTENTS"
 ls -larth $BUILD_DIR
 
 echo "-----> Building init script"
-INIT=$BUILD_DIR/.init.lisp
-USER_INIT=$BUILD_DIR/cf-setup.lisp
+INIT="./.init.lisp"
+USER_INIT="./cf-setup.lisp"
 
 cat > $INIT <<EOF
-(load "$QUICKLISP_PATH")
+(load "quicklisp.lisp")
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
 (push "$BUILD_DIR/" asdf:*central-registry*)
@@ -129,10 +138,10 @@ cat $INIT
 cat $ASDF_CONFIG_PATH
 
 echo "-----> Creating executable"
-ABCL_BIN=$BUILD_DIR/abcl
-JAVA=$(which java)
+ABCL_BIN="~/abcl"
+JAVA="~/.jdk/bin/java"
 JVM_OPTS="-server -Xrs"
-ABCL="$JAVA $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
+ABCL="java $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 cat > $ABCL_BIN <<EOF
 #!/bin/sh
@@ -154,7 +163,7 @@ INIT2=$BUILD_DIR/.init2.lisp
 cat > $INIT2 <<EOF
 (load "~/quicklisp/setup.lisp")
 (require :abcl-contrib)
-(push "$BUILD_DIR/" asdf:*central-registry*)
+(push "./" asdf:*central-registry*)
 (load "$USER_INIT")
 EOF
 cat $INIT2
@@ -162,15 +171,17 @@ cat $INIT2
 ## Prepare for post-stage environment
 
 export JAVA_HOME="~/.jdk"
+export JAVA="$JAVA_HOME/bin/java"
 export M2_HOME="~/.maven"
 export M2="${M2_HOME}/bin"
 export PATH=$JAVA_HOME/bin:$M2:/bin/usr/bin
 
+ABCL="$JAVA $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 /bin/cat > $ABCL_BIN <<EOF
 #!/bin/sh
-export PATH=~/.jdk/bin:~/.maven/bin:/bin:/usr/bin
-export JAVA_HOME=~/.jdk
+export PATH="~/.jdk/bin:~/.maven/bin:/bin:/usr/bin"
+export JAVA_HOME="~/.jdk"
 echo "ABCL script, running with \$@ args and $PATH"
 exec $ABCL --load $INIT2
 EOF
