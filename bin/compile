@@ -91,7 +91,9 @@ else
     echo "-----> Using cached ABCL jars"
 fi
 echo "------> Copying ABCL jars to build directory..."
+echo cp $ABCL_JAR_PATH $ABCL_DIR
 cp $ABCL_JAR_PATH $ABCL_DIR
+echo cp $ABCL_CONTRIB_JAR_PATH $ABCL_DIR
 cp $ABCL_CONTRIB_JAR_PATH $ABCL_DIR
 
 ABCL_JAR_PATH="$ABCL_DIR/abcl.jar"
