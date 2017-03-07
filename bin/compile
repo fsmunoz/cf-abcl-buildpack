@@ -6,6 +6,8 @@ ABCL_DIR="$BUILD_DIR/.abcl"
 
 echo "------> Creating .abcl dir"
 mkdir $ABCL_DIR
+echo "------> Creating .m2 dir"
+mkdir $HOME/.m2
 
 # From https://github.com/trautonen/heroku-buildpack-oracle-java
 maven_version() {
@@ -165,7 +167,7 @@ cat $ABCL_BIN
 
 chmod a+x $ABCL_BIN
 
-sh -x $ABCL_BIN --load $INIT
+$ABCL_BIN --load $INIT
 echo "----> Rerun...."
 
 INIT2=$BUILD_DIR/.init2.lisp
@@ -209,16 +211,6 @@ EOF
 
 echo "----"
 cat $ABCL_BIN
-
-#/bin/sh -x $ABCL_BIN --load $INIT2
-#$BUILD_DIR/abcl --load $BUILD_DIR/.init2.lisp
-
-# echo "---- BUILD -----"
-# ls -larth $BUILD_DIR
-# echo "---- HOME -----"
-# ls -larth $HOME
-# echo "---- PWD ----"
-# ls -larth
 
 
 cp -r $HOME/quicklisp $BUILD_DIR
