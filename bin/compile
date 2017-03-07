@@ -74,9 +74,9 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 
 
-ABCL_JAR_URL="https://common-lisp.net/project/armedbear/releases/current/abcl.jar"
+ABCL_JAR_URL="https://common-lisp.net/project/armedbear/releases/1.4.0/abcl.jar"
 ABCL_JAR_PATH="$CACHE_DIR/abcl.jar"
-ABCL_CONTRIB_JAR_URL="https://common-lisp.net/project/armedbear/releases/current/abcl-contrib.jar"
+ABCL_CONTRIB_JAR_URL="https://common-lisp.net/project/armedbear/releases/1.4.0/abcl-contrib.jar"
 ABCL_CONTRIB_JAR_PATH="$CACHE_DIR/abcl-contrib.jar"
 
 if [ ! -r "$ABCL_JAR_PATH" ]; then
