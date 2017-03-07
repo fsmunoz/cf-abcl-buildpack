@@ -98,6 +98,7 @@ ABCL_CONTRIB_JAR_PATH="$ABCL_DIR/abcl-contrib.jar"
 cp
 echo "-----> Installing maven"
 install_maven $CACHE_DIR
+echo cp -r $CACHE_DIR/.maven $BUILD_DIR
 cp -r $CACHE_DIR/.maven $BUILD_DIR
 
 ### Quicklisp
