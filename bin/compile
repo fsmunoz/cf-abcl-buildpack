@@ -133,8 +133,8 @@ cat > $INIT <<EOF
 (prin1 "Loading :abcl-bluemix")
 (ql:quickload :abcl-bluemix)
 (prin1 "Starting :abcl-bluemix")
-(abcl-bluemix::start)
-;;(quit)
+;;(abcl-bluemix::start)
+(quit)
 EOF
 
 echo "init script is:"
@@ -173,8 +173,8 @@ chmod a+x $ABCL_BIN
 
 echo "--- STARTING ABCL RUN ---"
 $ABCL_BIN --load $INIT
-echo "--- EXITING ----"
-exit
+#echo "--- EXITING ----"
+#exit
 
 INIT2=$BUILD_DIR/.init2.lisp
 
