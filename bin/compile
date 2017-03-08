@@ -129,7 +129,7 @@ cat > $INIT <<EOF
 (load "$BUILD_DIR/quicklisp.lisp")
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
-;;(push "$BUILD_DIR/" asdf:*central-registry*)
+(push "$BUILD_DIR/" asdf:*central-registry*)
 (prin1 "Loading :abcl-bluemix")
 (ql:quickload :abcl-bluemix)
 (prin1 "Starting :abcl-bluemix")
