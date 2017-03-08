@@ -223,4 +223,5 @@ cp -r $HOME/quicklisp $BUILD_DIR
 cp -r $HOME/.m2 $BUILD_DIR
 chmod a+x $ABCL_BIN
 
+ls -lart $HOME
 echo "-----> END OF COMPILE -----------------------"
