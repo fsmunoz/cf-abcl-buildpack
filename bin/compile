@@ -18,7 +18,7 @@ maven_version() {
 install_maven() {
   echo "... starting maven install"
   cache_dir=$1
-  rm -rf "${cache_dir}/.maven" && mkdir -p "${cache_dir}/.maven"
+  #rm -rf "${cache_dir}/.maven" && mkdir -p "${cache_dir}/.maven"
   maven_url=${2:-"http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"}
   maven_ver=${3:-"3.3.9"}
 
@@ -83,7 +83,7 @@ ABCL_JAR_PATH="$CACHE_DIR/abcl.jar"
 ABCL_CONTRIB_JAR_URL="https://common-lisp.net/project/armedbear/releases/1.4.0/abcl-contrib.jar"
 ABCL_CONTRIB_JAR_PATH="$CACHE_DIR/abcl-contrib.jar"
 
-rm -rf $ABCL_JAR_PATH
+#rm -rf $ABCL_JAR_PATH
 if [ ! -r "$ABCL_JAR_PATH" ]; then
     echo "-----> Downloading ABCL"
     echo "       Downloading abcl.jar"
