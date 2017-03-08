@@ -6,7 +6,7 @@ cat <<EOF
 config_vars:
   PATH: .abcl:.maven/bin:.jdk/bin:/usr/local/bin:/usr/bin:/bin
   JAVA_HOME: .jdk
-  JVM_OPTS: -server -Xrs
+  JVM_OPTS: -server -Xrs -Xmx600
 default_process_types:
   web: echo "STARTING WEB PROCESS"; ls -lart .abcl; type .abcl/abcl; echo "PATH is $PATH"; PATH=$PATH:.abcl:.maven/bin:.jdk/bin:/usr/local/bin:/usr/bin:/bin abcl --load ./.init2.lisp; echo "---- Sleeping-----" ; sleep 1h
 EOF
