@@ -156,7 +156,7 @@ cat $ASDF_CONFIG_PATH
 echo "-----> Creating executable"
 ABCL_BIN="$ABCL_DIR/abcl"
 JAVA="./.jdk/bin/java"
-JVM_OPTS="-server -Xrs -Xmx128m"
+JVM_OPTS="-server -Xrs -Xmx600m"
 ABCL="java $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 cat > $ABCL_BIN <<EOF
