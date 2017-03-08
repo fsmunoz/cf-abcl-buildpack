@@ -43,40 +43,49 @@ install_maven() {
 
 echo "=== Starting compile, build: $BUILD_DIR ; cache: $CACHE_DIR"
 
-# Load common JVM functionality from https://github.com/heroku/heroku-buildpack-jvm-common
-JVM_COMMON_BUILDPACK=https://heroku-jvm-common.s3.amazonaws.com/jvm-buildpack-common.tar.gz
-curl --silent --location $JVM_COMMON_BUILDPACK | tar -x bin/java -zO > /tmp/jvm-common
-source /tmp/jvm-common
+# # Load common JVM functionality from https://github.com/heroku/heroku-buildpack-jvm-common
+# JVM_COMMON_BUILDPACK=https://heroku-jvm-common.s3.amazonaws.com/jvm-buildpack-common.tar.gz
+# curl --silent --location $JVM_COMMON_BUILDPACK | tar -x bin/java -zO > /tmp/jvm-common
+# source /tmp/jvm-common
 
-# Set JDK version to 1.7
-JAVA_VERSION=1.8
+# # Set JDK version to 1.7
+# JAVA_VERSION=1.8
 
-if [ -z "$JAVA_VERSION" ]; then # could be set using user_env_compile
-    if [ -f "${BUILD_DIR}/system.properties" ]; then
-        JAVA_VERSION=$(get_app_system_value ${BUILD_DIR}/system.properties "java.runtime.version")
-    else
-        JAVA_VERSION=$DEFAULT_JDK_VERSION
-    fi
-fi
+# if [ -z "$JAVA_VERSION" ]; then # could be set using user_env_compile
+#     if [ -f "${BUILD_DIR}/system.properties" ]; then
+#         JAVA_VERSION=$(get_app_system_value ${BUILD_DIR}/system.properties "java.runtime.version")
+#     else
+#         JAVA_VERSION=$DEFAULT_JDK_VERSION
+#     fi
+# fi
 
-# Install JDK
-if [ "$(is_supported_java_version ${JAVA_VERSION})" = "true" ]; then
-    echo -n "-----> Installing OpenJDK ${JAVA_VERSION}..."
-    install_java ${BUILD_DIR} ${JAVA_VERSION}
-    jdk_overlay ${BUILD_DIR}
-    echo "done"
-else
-    echo " !     Unsupported Java version: $JAVA_VERSION"
-    exit 1
-fi
+# # Install JDK
+# if [ "$(is_supported_java_version ${JAVA_VERSION})" = "true" ]; then
+#     echo -n "-----> Installing OpenJDK ${JAVA_VERSION}..."
+#     install_java ${BUILD_DIR} ${JAVA_VERSION}
+#     jdk_overlay ${BUILD_DIR}
+#     echo "done"
+# else
+#     echo " !     Unsupported Java version: $JAVA_VERSION"
+#     exit 1
+# fi
 
-# Make sure new JDK is visible
-echo "--->Setting JAVA"
-export JAVA_HOME="$BUILD_DIR/.jdk"
-ls $JAVA_HOME
-export PATH="$JAVA_HOME/bin:$PATH"
+# # Make sure new JDK is visible
+# echo "--->Setting JAVA"
+# export JAVA_HOME="$BUILD_DIR/.jdk"
+# ls $JAVA_HOME
+# export PATH="$JAVA_HOME/bin:$PATH"
 
+# download the buildpack
+JVM_COMMON_BUILDPACK=${JVM_COMMON_BUILDPACK:-https://codon-buildpacks.s3.amazonaws.com/buildpacks/heroku/jvm-common.tgz}
+mkdir -p /tmp/jvm-common
+curl --silent --location $JVM_COMMON_BUILDPACK | tar xzm -C /tmp/jvm-common --strip-components=1
+. /tmp/jvm-common/bin/util
+. /tmp/jvm-common/bin/java
 
+# install JDK
+javaVersion=$(detect_java_version ${BUILD_DIR})
+install_java ${BUILD_DIR} ${javaVersion}
 
 ABCL_JAR_URL="https://common-lisp.net/project/armedbear/releases/1.4.0/abcl.jar"
 ABCL_JAR_PATH="$CACHE_DIR/abcl.jar"
