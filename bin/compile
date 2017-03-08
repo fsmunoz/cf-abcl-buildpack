@@ -130,8 +130,11 @@ cat > $INIT <<EOF
 (quicklisp-quickstart:install)
 (require :abcl-contrib)
 (push "$BUILD_DIR/" asdf:*central-registry*)
-(ql:quickload "abcl-bluemix")
-(quit)
+(prin1 "Loading :abcl-bluemix")
+(ql:quickload :abcl-bluemix)
+(prin1 "Starting :abcl-bluemix")
+(abcl-bluemix::start)
+;;(quit)
 EOF
 
 echo "init script is:"
@@ -168,8 +171,11 @@ cat $ABCL_BIN
 
 chmod a+x $ABCL_BIN
 
+echo "--- STARTING ABCL RUN ---"
 $ABCL_BIN --load $INIT
 echo "----> Rerun...."
+echo "--- EXITING ----"
+exit
 
 INIT2=$BUILD_DIR/.init2.lisp
 
