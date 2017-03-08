@@ -142,7 +142,7 @@ cat $INIT
 
 
 #JAVA=$(which java)
-#ABCL="$JAVA -server -Xrs -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
+#ABCL="$JAVA -server -Xrs-cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 # echo "------> Configuring ASDF"
 # ASDF_CONFIG_PATH="$BUILD_DIR/.config/common-lisp/source-registry.conf.d/build.conf"
@@ -156,7 +156,7 @@ cat $ASDF_CONFIG_PATH
 echo "-----> Creating executable"
 ABCL_BIN="$ABCL_DIR/abcl"
 JAVA="./.jdk/bin/java"
-JVM_OPTS="-server -Xrs"
+JVM_OPTS="-server -Xrs -Xmx 128 "
 ABCL="java $JVM_OPTS -cp $ABCL_JAR_PATH:$ABCL_CONTRIB_JAR_PATH org.armedbear.lisp.Main"
 
 cat > $ABCL_BIN <<EOF
