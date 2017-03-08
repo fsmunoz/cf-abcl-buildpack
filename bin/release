@@ -8,5 +8,5 @@ config_vars:
   JAVA_HOME: .jdk
   JVM_OPTS: -server -Xrs
 default_process_types:
-  web: ls -lart .abcl; type .abcl/abcl; cd .abcl && ./abcl --load .init2.lisp; sleep 1h
+  web: ls -lart .abcl; type .abcl/abcl; cd .abcl && ./abcl --load ./.init2.lisp; sleep 1h
 EOF
